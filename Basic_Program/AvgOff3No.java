@@ -1,4 +1,3 @@
-package Practice;
 import java.util.Scanner;
 public class AvgOff3No {
     public static void main(String[] args) {
