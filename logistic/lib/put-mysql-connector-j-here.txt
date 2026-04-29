@@ -1,0 +1,4 @@
+Put the MySQL Connector/J jar in this folder.
+
+Example:
+mysql-connector-j-9.3.0.jar
