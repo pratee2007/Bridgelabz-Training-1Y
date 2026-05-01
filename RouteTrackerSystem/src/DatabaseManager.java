@@ -26,13 +26,13 @@ public class DatabaseManager {
                 CREATE TABLE IF NOT EXISTS checkpoints (
                     checkpoint_id VARCHAR(50) PRIMARY KEY,
                     driver_id VARCHAR(50) NOT NULL,
-                    checkpoint_type VARCHAR(40) NOT NULL,
+                    type VARCHAR(30) NOT NULL,
                     location_name VARCHAR(150) NOT NULL,
                     distance_from_last DOUBLE NOT NULL,
                     expected_duration DOUBLE NOT NULL,
                     actual_duration DOUBLE NOT NULL,
                     penalty DOUBLE NOT NULL,
-                    critical BOOLEAN NOT NULL,
+                    is_critical BOOLEAN NOT NULL,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     FOREIGN KEY (driver_id) REFERENCES drivers(driver_id)
                         ON DELETE CASCADE
@@ -89,20 +89,20 @@ public class DatabaseManager {
     public static void saveCheckpoint(String driverId, Checkpoint cp) {
         String sql = """
             INSERT INTO checkpoints (
-                checkpoint_id, driver_id, checkpoint_type, location_name,
+                checkpoint_id, driver_id, type, location_name,
                 distance_from_last, expected_duration, actual_duration,
-                penalty, critical
+                penalty, is_critical
             )
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON DUPLICATE KEY UPDATE
                 driver_id = VALUES(driver_id),
-                checkpoint_type = VALUES(checkpoint_type),
+                type = VALUES(type),
                 location_name = VALUES(location_name),
                 distance_from_last = VALUES(distance_from_last),
                 expected_duration = VALUES(expected_duration),
                 actual_duration = VALUES(actual_duration),
                 penalty = VALUES(penalty),
-                critical = VALUES(critical)
+                is_critical = VALUES(is_critical)
             """;
 
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -160,3 +160,4 @@ public class DatabaseManager {
         }
     }
 }
+
